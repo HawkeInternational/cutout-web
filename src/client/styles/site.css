@@ -1,0 +1,110 @@
+﻿html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.left-sidebar {
+    float: left;
+    height: 100%;
+    width: 100px;
+    margin: 0 10px 0 10px;
+}
+
+.left-sidebar > div {
+    margin: 5px 0 5px 0;
+}
+
+.left-sidebar button {
+    width: 80px;
+}
+
+.left-sidebar input {
+    width: 80px;
+}
+
+.control-group {
+}
+
+.container {
+    float: left;
+    left: calc(100% - 100px);
+    height: 800px;
+    width: 1000px;
+    background-color: #3177C6;
+}
+
+.canvas {
+    height: 800px;
+    width: 1000px;
+}
+
+.panel {
+    position: absolute;
+    display: block;
+    left: 960px;
+    top: 36px;
+    width: 140px;
+    height: 80px;
+    z-index: 1;
+    background: rgba(128, 128, 128, 0.8);
+    border: 1px solid rgba(150, 150, 150, 0.15);
+}
+
+.panel.hidden {
+    visibility: hidden;
+}
+
+.panel-title {
+    color: lightgray;
+    margin: 2px 2px 2px 2px;
+    text-transform: uppercase; 
+}
+
+.panel-row {
+    margin: 6px 4px 6px 4px;
+}
+
+.panel-row > label {
+    display: inline-block;
+    width: 40px;
+}
+
+.panel-row > input {
+    width: 80px;
+}
+
+.panel-row > select {
+    width: 84px;
+}
+
+.panel-accept-btn {
+    margin: 0 2px 0 2px;
+    width: 60px;
+}
+
+.panel-close-btn {
+    width: 60px;
+}
+
+.cutout-outline {
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+}
+
+/*.cutout-outline:hover {
+    stroke: lightgreen;
+}*/
+
+.cutout-outline.selected {
+    stroke: lightgreen;
+}
+
+.cutout-keepoutzone {
+    fill: none;
+    stroke: lightgrey;
+    stroke-width: 2;
+    stroke-dasharray: 5;
+    stroke-dashoffset: 5;
+}

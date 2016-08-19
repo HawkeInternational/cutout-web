@@ -1,0 +1,18 @@
+{
+  "name": "cutout",
+  "version": "0.0.1",
+  "description": "Hawke Cutout Editor Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server/server.js"
+  },
+  "author": {
+    "name": "liskaj",
+    "email": ""
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "serve-favicon": "^2.3.0"
+  }
+}
