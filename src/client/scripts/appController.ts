@@ -36,9 +36,6 @@ export class AppController {
         svgDocument.on('mouseover', (event) => {
             this.onMouseOver(event);
         });
-        /*svgDocument.on('mouseout', (event) => {
-            this.onMouseOut(event);
-        });*/
         svgDocument.on('mousemove', (event) => {
             this.onMouseMove(event);
         });
