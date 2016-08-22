@@ -50,7 +50,7 @@ export class CutoutPlaceTool implements Tool {
             this._cutout = new CircularCutout(this._size);
             this._model.addCutout(this._cutout);
         }
-        this._cutout.move(event.x, event.y);
+        this._model.moveCutout(this._cutout, event.x, event.y);
         return true;
     }
 
@@ -122,7 +122,7 @@ export class CutoutMoveTool implements Tool {
     }
 
     public onMouseMove(event: MouseEvent): boolean {
-        this._cutout.move(event.x, event.y);
+        this._model.moveCutout(this._cutout, event.x, event.y);
         return true;
     }
 

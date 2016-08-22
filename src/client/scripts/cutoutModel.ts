@@ -65,10 +65,7 @@ export class CutoutModel {
             }
         }
         if (index >= 0) {
-            let cutout: Cutout = this._cutouts[index];
-
-            console.info('Selected cutout: ' + index + ' Distance: ' + mindist);
-            return cutout;
+            return this._cutouts[index];
         }
         return null;
     }
@@ -93,6 +90,47 @@ export class CutoutModel {
             }
         }
         return null;
+    }
+
+    public moveCutout(cutout: Cutout, x: number, y: number): void {
+        let group = <SVG.G> cutout.element;
+
+        if (group) {
+            group.translate(x - this._clientRect.left - cutout.width * 0.5, y - this._clientRect.top - cutout.height * 0.5);
+        }
+        console.debug('checking clashes');
+        // get bounding box of cutout
+        let bbox1: SVG.TBox = group.tbox();
+        let safeRadius1: number = Math.max(cutout.safeHeight, cutout.safeWidth) * 0.5;
+        let numClashes: number = 0;
+
+        // check for collision
+        for (let i = 0; i < this._cutouts.length; i++) {
+            let otherCutout: Cutout = this._cutouts[i];
+
+            if (cutout.element.id() === otherCutout.element.id()) {
+                continue;
+            }
+            let bbox2: SVG.TBox = otherCutout.element.tbox();
+            let safeRadius2: number = Math.max(otherCutout.safeHeight, otherCutout.safeWidth) * 0.5;
+            let dist: number = CutoutModel.distance(bbox1.cx, bbox1.cy, bbox2.cx, bbox2.cy);
+
+            if (dist <= (safeRadius1 + safeRadius2)) {
+                otherCutout.showZone(true);
+                otherCutout.showClash(true);
+                numClashes++;
+            }
+            else {
+                otherCutout.showZone(false);
+                otherCutout.showClash(false);
+            }
+        }
+        if (numClashes > 0) {
+            cutout.showClash(true);
+        }
+        else {
+            cutout.showClash(false);
+        }
     }
 
     public removeCutout(cutout: Cutout): void {
@@ -128,5 +166,9 @@ export class CutoutModel {
                 }
             }
         }
+    }
+
+    private static distance(x1: number, y1: number, x2: number, y2: number): number {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 }

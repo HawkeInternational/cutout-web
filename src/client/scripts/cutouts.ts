@@ -5,21 +5,25 @@
 export interface Cutout {
     x: number;
     y: number;
+    height: number;
+    width: number;
+    safeHeight: number;
+    safeWidth: number;
     element: SVG.Element;
 
     add(document: SVG.Doc, clientRect: ClientRect): SVG.Element;
-    move(x: number, y: number): void;
+    //move(x: number, y: number): void;
+    showClash(show: boolean): void;
     showZone(show: boolean): void;
     remove(): void;
 }
 
 export class CircularCutout implements Cutout {
+    private _document: SVG.Doc;
     private _group: SVG.G;
     private _size: string;
     private _diameter: number;
     private _keepoutZoneDiameter: number;
-    private _xoffset: number;
-    private _yoffset: number;
     private _x: number;
     private _y: number;
 
@@ -41,6 +45,22 @@ export class CircularCutout implements Cutout {
         return this._y;
     }
 
+    public get height(): number {
+        return this._diameter;
+    }
+
+    public get width(): number {
+        return this._diameter;
+    }
+
+    public get safeHeight(): number {
+        return this._keepoutZoneDiameter;
+    }
+
+    public get safeWidth(): number {
+        return this._keepoutZoneDiameter;
+    }
+
     public get size(): string {
         return this._size;
     }
@@ -59,8 +79,7 @@ export class CircularCutout implements Cutout {
     }
 
     public add(document: SVG.Doc, clientRect: ClientRect): SVG.Element {
-        this._xoffset = clientRect.left + this._diameter * 0.5;
-        this._yoffset = clientRect.top + this._diameter * 0.5;
+        this._document = document;
         this._group = document.group();
         let outline = document.circle(this._diameter);
 
@@ -75,24 +94,25 @@ export class CircularCutout implements Cutout {
         return this._group;
     }
 
+    public showClash(show: boolean): void {
+        if (show) {
+            this._group.children().forEach((element) => {
+                element.addClass('clash');
+            });
+        }
+        else {
+            this._group.children().forEach((element) => {
+                element.removeClass('clash');
+            });
+        }
+    }
+
     public showZone(show: boolean): void {
         if (show) {
             this._group.get(1).show();
         }
         else {
             this._group.get(1).hide();
-        }
-        let m: SVG.Matrix = new SVG.Matrix();
-
-        this._group.transform(m);
-        this._group.translate(this._x, this._y);
-    }
-
-    public move(x: number, y: number): void {
-        if (this._group) {
-            this._x = x - this._xoffset;
-            this._y = y - this._yoffset;
-            this._group.translate(this._x, this._y);
         }
     }
 

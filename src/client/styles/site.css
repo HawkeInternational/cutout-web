@@ -93,18 +93,22 @@
     stroke-width: 2;
 }
 
-/*.cutout-outline:hover {
-    stroke: lightgreen;
-}*/
-
 .cutout-outline.selected {
     stroke: lightgreen;
+}
+
+.cutout-outline.clash {
+    stroke: red;
 }
 
 .cutout-keepoutzone {
     fill: none;
     stroke: lightgrey;
-    stroke-width: 2;
+    stroke-width: 1;
     stroke-dasharray: 5;
     stroke-dashoffset: 5;
+}
+
+.cutout-keepoutzone.clash {
+    stroke: red;
 }
