@@ -35,6 +35,9 @@ export class AppController {
         $('#grid-snap-toggle').on('click', (event) => {
             this.onChangeSnap(event);
         });
+        $('#grid-snap').on('change', (event) => {
+            this.onChangeSnap(event);
+        });
         let svgDocument: SVG.Doc = SVG('svg-canvas');
 
         this._model = new CutoutModel(svgDocument);
