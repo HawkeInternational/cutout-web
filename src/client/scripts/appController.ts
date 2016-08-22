@@ -15,7 +15,7 @@ export class AppController {
     }
 
     public initialize(): void {
-        $('#btn-new').click((event) => {
+        $('#btn-new').on('click', (event) => {
             this.onNew(event);
         });
         $('#btn-cutout-add').on('click', (event) => {
