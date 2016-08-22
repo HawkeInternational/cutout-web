@@ -35,11 +35,49 @@ export class CutoutModel {
         outline.add(this.document, this._clientRect);
     }
 
+    public cutoutFromPoint(x: number, y: number): Cutout {
+        let mindist: number = NaN;
+        let index: number = -1;
+
+        for (let i: number = 0; i < this._cutouts.length; i++) {
+            let cutout: Cutout = this._cutouts[i];
+            let bbox = cutout.element.tbox();
+            let radius = Math.max(bbox.w, bbox.h) * 0.7;
+            // uncomment for debugging
+            /*let l = this.document.line(x - this._clientRect.left, y - this._clientRect.top, bbox.cx, bbox.cy);
+
+            l.stroke({
+                color: '#ff0000'
+            });*/
+            let dist: number = Math.sqrt(Math.pow(x - this._clientRect.left - bbox.cx, 2) + Math.pow(y - this._clientRect.top - bbox.cy, 2));
+
+            if (dist <= radius) {
+                if (index === -1) {
+                    mindist = dist;
+                    index = i;
+                }
+                else {
+                    if (dist < mindist) {
+                        mindist = dist;
+                        index = i;
+                    }
+                }
+            }
+        }
+        if (index >= 0) {
+            let cutout: Cutout = this._cutouts[index];
+
+            console.info('Selected cutout: ' + index + ' Distance: ' + mindist);
+            return cutout;
+        }
+        return null;
+    }
+
     public getCutoutById(id: string): Cutout {
         for (let i = 0; i < this._cutouts.length; i++) {
             let cutout = this._cutouts[i];
 
-            if (cutout.element.node.id === id) {
+            if (cutout.element.id() === id) {
                 return cutout;
             }
             if (cutout.element instanceof SVG.G) {
@@ -48,7 +86,7 @@ export class CutoutModel {
                 for (let j = 0; j < group.children().length; j++) {
                     let childElement = group.get(j);
 
-                    if (childElement.node.id === id) {
+                    if (childElement.id() === id) {
                         return cutout;
                     }
                 }
@@ -62,7 +100,7 @@ export class CutoutModel {
         for (let i = 0; i < this._cutouts.length; i++) {
             let cutout2 = this._cutouts[i];
 
-            if (cutout2.element.node.id === cutout.element.node.id) {
+            if (cutout2.element.id() === cutout.element.id()) {
                 this._cutouts.splice(i, 1);
             }
         }

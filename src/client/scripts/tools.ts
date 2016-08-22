@@ -73,14 +73,10 @@ export class CutoutSelectTool implements Tool {
     }
 
     public onClick(event: MouseEvent): boolean {
-        let element = document.elementFromPoint(event.x, event.y);
+        let cutout: Cutout = this._model.cutoutFromPoint(event.x, event.y);
 
-        if (element instanceof SVGElement) {
-            let cutout = this._model.getCutoutById(element.id);
-
-            if (cutout) {
-                this._model.selectCutout(cutout);
-            }
+        if (cutout) {
+            this._model.selectCutout(cutout);
         }
         return true;
     }
