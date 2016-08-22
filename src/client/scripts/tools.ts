@@ -117,6 +117,9 @@ export class CutoutMoveTool implements Tool {
     public start(): boolean {
         let cutouts: Cutout[] = this._model.selection;
 
+        if (cutouts.length === 0) {
+            return false;
+        }
         this._cutout = cutouts[0];
         this._cutout.showZone(true);
         return true;

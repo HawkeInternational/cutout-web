@@ -9,13 +9,11 @@ export class CutoutModel {
     private _clientRect: ClientRect;
     private _outline: Outline;
     private _cutouts: Cutout[];
-    private _selection: Cutout[];
 
     constructor(document: SVG.Doc) {
         this._document = document;
         this._clientRect = this._document.node.getBoundingClientRect();
         this._cutouts = [];
-        this._selection = [];
     }
 
     public get document(): SVG.Doc {
@@ -23,7 +21,14 @@ export class CutoutModel {
     }
 
     public get selection(): Cutout[] {
-        return this._selection;
+        let result: Cutout[] = [];
+
+        this._cutouts.forEach((cutout: Cutout) => {
+            if (cutout.selected) {
+                result.push(cutout);
+            }
+        });
+        return result;
     }
 
     public addCutout(cutout: Cutout): void {
@@ -149,21 +154,6 @@ export class CutoutModel {
 
     public selectCutout(cutout: Cutout, select = true): void {
         cutout.showSelected(select);
-        for (let i = 0; i < this._selection.length; i++) {
-            if (this._selection[i].element.id() === cutout.element.id()) {
-                if (select) {
-                    return; // already added - do nothing
-                }
-                else {
-                    this.selection.splice(i, 1);
-                    break;
-                }
-            }
-        }
-        if (select) {
-            this._selection.push(cutout);
-        }
-
     }
 
     private static distance(x1: number, y1: number, x2: number, y2: number): number {
