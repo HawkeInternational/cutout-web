@@ -32,6 +32,9 @@ export class AppController {
         $('#btn-cutout-move').on('click', (event) => {
             this.onCutoutMove(event);
         });
+        $('#grid-show-toggle').on('click', (event) => {
+            this.onShowGrid(event);
+        });
         $('#grid-snap-toggle').on('click', (event) => {
             this.onChangeSnap(event);
         });
@@ -69,6 +72,15 @@ export class AppController {
             this._activeTool.stop();
         }
         this._activeTool = null;
+    }
+
+    private onShowGrid(event): void {
+        let showGrid: boolean = false;
+
+        if ($('#grid-show-toggle').is(':checked')) {
+            showGrid = true;
+        }
+        $('#container').toggleClass('grid', showGrid);
     }
 
     private onChangeSnap(event): void {

@@ -32,6 +32,9 @@
     height: 800px;
     width: 1000px;
     background-color: #3177C6;
+}
+
+.container.grid {
     background-image: url('../img/grid.png');
 }
 
