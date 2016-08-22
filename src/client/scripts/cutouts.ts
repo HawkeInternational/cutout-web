@@ -12,14 +12,12 @@ export interface Cutout {
     element: SVG.Element;
 
     add(document: SVG.Doc, clientRect: ClientRect): SVG.Element;
-    //move(x: number, y: number): void;
     showClash(show: boolean): void;
     showZone(show: boolean): void;
     remove(): void;
 }
 
 export class CircularCutout implements Cutout {
-    private _document: SVG.Doc;
     private _group: SVG.G;
     private _size: string;
     private _diameter: number;
@@ -79,7 +77,6 @@ export class CircularCutout implements Cutout {
     }
 
     public add(document: SVG.Doc, clientRect: ClientRect): SVG.Element {
-        this._document = document;
         this._group = document.group();
         let outline = document.circle(this._diameter);
 
