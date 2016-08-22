@@ -133,7 +133,11 @@ export class CutoutModel {
     }
 
     public removeCutout(cutout: Cutout): void {
-        cutout.remove();
+        let group = <SVG.G>cutout.element;
+
+        if (group) {
+            group.remove();
+        }
         for (let i = 0; i < this._cutouts.length; i++) {
             let cutout2 = this._cutouts[i];
 

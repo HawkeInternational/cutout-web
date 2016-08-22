@@ -17,7 +17,6 @@ export interface Cutout {
     showSelected(show: boolean): void;
     showClash(show: boolean): void;
     showZone(show: boolean): void;
-    remove(): void;
 }
 
 export class CircularCutout implements Cutout {
@@ -138,12 +137,6 @@ export class CircularCutout implements Cutout {
         }
         else {
             this._group.get(1).hide();
-        }
-    }
-
-    public remove(): void {
-        if (this._group) {
-            this._group.remove();
         }
     }
 }
