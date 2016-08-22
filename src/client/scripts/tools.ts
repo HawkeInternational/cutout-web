@@ -82,7 +82,7 @@ export class CutoutSelectTool implements Tool {
         let cutout: Cutout = this._model.cutoutFromPoint(event.x, event.y);
 
         if (cutout) {
-            this._model.selectCutout(cutout);
+            this._model.selectCutout(cutout, !cutout.selected);
         }
         return true;
     }

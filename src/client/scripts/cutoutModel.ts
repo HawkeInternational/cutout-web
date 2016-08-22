@@ -144,27 +144,22 @@ export class CutoutModel {
     }
 
     public selectCutout(cutout: Cutout, select = true): void {
-        let group: SVG.G = <SVG.G> cutout.element;
-        
-        group.children().forEach((element) => {
-            if (select) {
-                element.addClass('selected');
-            }
-            else {
-                element.removeClass('selected');
-            }
-        });
-        if (select) {
-            this._selection.push(cutout);
-        }
-        else {
-            for (let i = 0; i < this._selection.length; i++) {
-                if (this._selection[i].element.id() === cutout.element.id()) {
+        cutout.select(select);
+        for (let i = 0; i < this._selection.length; i++) {
+            if (this._selection[i].element.id() === cutout.element.id()) {
+                if (select) {
+                    return; // already added - do nothing
+                }
+                else {
                     this.selection.splice(i, 1);
                     break;
                 }
             }
         }
+        if (select) {
+            this._selection.push(cutout);
+        }
+
     }
 
     private static distance(x1: number, y1: number, x2: number, y2: number): number {

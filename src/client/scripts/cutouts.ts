@@ -10,9 +10,11 @@ export interface Cutout {
     safeHeight: number;
     safeWidth: number;
     hasClash: boolean;
+    selected: boolean;
     element: SVG.Element;
 
     add(document: SVG.Doc, clientRect: ClientRect): SVG.Element;
+    select(select: boolean): void;
     showClash(show: boolean): void;
     showZone(show: boolean): void;
     remove(): void;
@@ -26,6 +28,7 @@ export class CircularCutout implements Cutout {
     private _x: number;
     private _y: number;
     private _hasClash: boolean;
+    private _selected: boolean;
 
     constructor(size: string) {
         this._size = size;
@@ -65,6 +68,10 @@ export class CircularCutout implements Cutout {
         return this._hasClash;
     }
 
+    public get selected(): boolean {
+        return this._selected;
+    }
+
     public get size(): string {
         return this._size;
     }
@@ -95,6 +102,20 @@ export class CircularCutout implements Cutout {
         keepoutZone.y((this._diameter - this._keepoutZoneDiameter) * 0.5);
         this._group.add(keepoutZone);
         return this._group;
+    }
+
+    public select(select: boolean): void {
+        if (select) {
+            this._group.children().forEach((element) => {
+                element.addClass('selected');
+            });
+        }
+        else {
+            this._group.children().forEach((element) => {
+                element.removeClass('selected');
+            });
+        }
+        this._selected = select;
     }
 
     public showClash(show: boolean): void {
