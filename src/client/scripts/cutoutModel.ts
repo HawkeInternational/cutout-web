@@ -49,7 +49,7 @@ export class CutoutModel {
             l.stroke({
                 color: '#ff0000'
             });*/
-            let dist: number = Math.sqrt(Math.pow(x - this._clientRect.left - bbox.cx, 2) + Math.pow(y - this._clientRect.top - bbox.cy, 2));
+            let dist: number = CutoutModel.distance(x - this._clientRect.left, y - this._clientRect.top, bbox.cx, bbox.cy);
 
             if (dist <= radius) {
                 if (index === -1) {
@@ -98,7 +98,6 @@ export class CutoutModel {
         if (group) {
             group.translate(x - this._clientRect.left - cutout.width * 0.5, y - this._clientRect.top - cutout.height * 0.5);
         }
-        console.debug('checking clashes');
         // get bounding box of cutout
         let bbox1: SVG.TBox = group.tbox();
         let safeRadius1: number = Math.max(cutout.safeHeight, cutout.safeWidth) * 0.5;
