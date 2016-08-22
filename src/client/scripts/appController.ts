@@ -10,8 +10,10 @@ import { RectangularOutline } from './cutouts';
 export class AppController {
     private _activeTool: Tool;
     private _model: CutoutModel;
+    private _snap: number;
 
     constructor() {
+       this._snap = 1;
     }
 
     public initialize(): void {
@@ -29,6 +31,9 @@ export class AppController {
         });
         $('#btn-cutout-move').on('click', (event) => {
             this.onCutoutMove(event);
+        });
+        $('#grid-snap-toggle').on('click', (event) => {
+            this.onChangeSnap(event);
         });
         let svgDocument: SVG.Doc = SVG('svg-canvas');
 
@@ -61,6 +66,15 @@ export class AppController {
             this._activeTool.stop();
         }
         this._activeTool = null;
+    }
+
+    private onChangeSnap(event): void {
+        if ($('#grid-snap-toggle').is(':checked')) {
+            this._snap = parseInt($('#grid-snap').val());
+        }
+        else {
+            this._snap = 1;
+        }
     }
 
     private onNew(event): void {
@@ -111,7 +125,10 @@ export class AppController {
 
     private onMouseMove(event: MouseEvent): void {
         if (this._activeTool && this._activeTool.onMouseMove) {
-            if (!this._activeTool.onMouseMove(event)) {
+            let x = Math.round(event.x / this._snap) * this._snap;
+            let y = Math.round(event.y / this._snap) * this._snap;
+
+            if (!this._activeTool.onMouseMove(x, y)) {
                 this.stopTool();
             }
         }

@@ -38,6 +38,7 @@ export class CutoutModel {
 
     public addOutline(outline: Outline): void {
         outline.add(this.document, this._clientRect);
+        this._cutouts = [];
     }
 
     public cutoutFromPoint(x: number, y: number): Cutout {

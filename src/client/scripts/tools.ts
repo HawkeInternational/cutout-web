@@ -9,7 +9,7 @@ import { Cutout, CircularCutout } from './cutouts';
 export interface Tool {
     start?(): boolean;
     stop?(): void;
-    onMouseMove?(event: MouseEvent): boolean;
+    onMouseMove?(x: number, y: number): boolean;
     onClick?(event: MouseEvent): boolean;
 }
 
@@ -51,12 +51,12 @@ export class CutoutPlaceTool implements Tool {
         return false;
     }
 
-    public onMouseMove(event: MouseEvent): boolean {
+    public onMouseMove(x: number, y: number): boolean {
         if (!this._cutout) {
             this._cutout = new CircularCutout(this._size);
             this._model.addCutout(this._cutout);
         }
-        this._model.moveCutout(this._cutout, event.x, event.y);
+        this._model.moveCutout(this._cutout, x, y);
         return true;
     }
 
@@ -126,12 +126,14 @@ export class CutoutMoveTool implements Tool {
     }
 
     public stop(): void {
-        this._cutout.showZone(false);
-        this._cutout = null;
+        if (this._cutout) {
+            this._cutout.showZone(false);
+            this._cutout = null;
+        }
     }
 
-    public onMouseMove(event: MouseEvent): boolean {
-        this._model.moveCutout(this._cutout, event.x, event.y);
+    public onMouseMove(x: number, y: number): boolean {
+        this._model.moveCutout(this._cutout, x, y);
         return true;
     }
 

@@ -19,7 +19,7 @@
     width: 80px;
 }
 
-.left-sidebar input {
+.left-sidebar input[type=number] {
     width: 80px;
 }
 
@@ -32,6 +32,7 @@
     height: 800px;
     width: 1000px;
     background-color: #3177C6;
+    background-image: url('../img/grid.png');
 }
 
 .canvas {
