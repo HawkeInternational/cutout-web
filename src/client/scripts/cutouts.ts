@@ -14,7 +14,7 @@ export interface Cutout {
     element: SVG.Element;
 
     add(document: SVG.Doc, clientRect: ClientRect): SVG.Element;
-    select(select: boolean): void;
+    showSelected(show: boolean): void;
     showClash(show: boolean): void;
     showZone(show: boolean): void;
     remove(): void;
@@ -104,20 +104,6 @@ export class CircularCutout implements Cutout {
         return this._group;
     }
 
-    public select(select: boolean): void {
-        if (select) {
-            this._group.children().forEach((element) => {
-                element.addClass('selected');
-            });
-        }
-        else {
-            this._group.children().forEach((element) => {
-                element.removeClass('selected');
-            });
-        }
-        this._selected = select;
-    }
-
     public showClash(show: boolean): void {
         if (show) {
             this._group.children().forEach((element) => {
@@ -130,6 +116,20 @@ export class CircularCutout implements Cutout {
             });
         }
         this._hasClash = show;
+    }
+
+    public showSelected(show: boolean): void {
+        if (show) {
+            this._group.children().forEach((element) => {
+                element.addClass('selected');
+            });
+        }
+        else {
+            this._group.children().forEach((element) => {
+                element.removeClass('selected');
+            });
+        }
+        this._selected = show;
     }
 
     public showZone(show: boolean): void {
@@ -170,12 +170,6 @@ export class RectangularOutline implements Outline {
         this._element = document.rect(this._width, this._height);
         this._element.x(xoffset);
         this._element.y(yoffset);
-        this._element.fill({
-            color: 'none'
-        });
-        this._element.stroke({
-            color: '#fff',
-            width: 2
-        });
+        this._element.addClass('outline');
     }
 }

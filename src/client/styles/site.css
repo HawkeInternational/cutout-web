@@ -103,6 +103,12 @@
     visibility: hidden;
 }
 
+.outline {
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+}
+
 .cutout-outline {
     fill: none;
     stroke: white;

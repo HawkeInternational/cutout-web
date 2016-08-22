@@ -144,7 +144,7 @@ export class CutoutModel {
     }
 
     public selectCutout(cutout: Cutout, select = true): void {
-        cutout.select(select);
+        cutout.showSelected(select);
         for (let i = 0; i < this._selection.length; i++) {
             if (this._selection[i].element.id() === cutout.element.id()) {
                 if (select) {
