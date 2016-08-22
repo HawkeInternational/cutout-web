@@ -87,6 +87,22 @@
     width: 60px;
 }
 
+.notify-panel {
+    position: absolute;
+    display: block;
+    left: 140px;
+    top: 36px;
+    width: 240px;
+    height: 50px;
+    z-index: 1;
+    background: rgba(196, 27, 27, 0.8);
+    border: 1px solid rgba(150, 150, 150, 0.15);
+}
+
+.notify-panel.hidden {
+    visibility: hidden;
+}
+
 .cutout-outline {
     fill: none;
     stroke: white;

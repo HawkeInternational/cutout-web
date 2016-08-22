@@ -38,6 +38,12 @@ export class CutoutPlaceTool implements Tool {
     }
 
     public onClick(event: MouseEvent): boolean {
+        if (this._cutout.hasClash) {
+            $('#notify-panel').toggleClass('hidden', false);
+            $('#notify-panel-message').text('Cutout has clashes, unable to place.');
+            return true;
+        }
+        $('#notify-panel').toggleClass('hidden', true);
         if (this._cutout) {
             this._cutout.showZone(false);
         }
