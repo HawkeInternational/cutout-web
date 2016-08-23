@@ -142,6 +142,8 @@ export class CircularCutout implements Cutout {
 }
 
 export interface Outline {
+    element: SVG.Element;
+
     add(document: SVG.Doc, clientRect: ClientRect): void;
 }
 
@@ -153,6 +155,10 @@ export class RectangularOutline implements Outline {
     constructor(width: number, height: number) {
         this._width = width;
         this._height = height;
+    }
+
+    public get element(): SVG.Element {
+        return this._element;
     }
 
     public add(document: SVG.Doc, clientRect: ClientRect): void {
