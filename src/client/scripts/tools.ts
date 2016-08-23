@@ -101,7 +101,7 @@ export class CutoutDeleteTool implements Tool {
         let cutouts: Cutout[] = this._model.selection;
 
         cutouts.forEach((cutout) => {
-            this._model.removeCutout(cutout);
+            this._model.deleteCutout(cutout);
         });
         // stop command
         return false;

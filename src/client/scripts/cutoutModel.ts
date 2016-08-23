@@ -5,22 +5,38 @@
 
 import { Cutout, Outline } from './cutouts';
 
+/**
+ * Represents model for cutout placement. Model has one outline and multiple cutouts.
+ * In current version the outline is a rectangle and cutouts are circular
+ */
 export class CutoutModel {
     private _document: SVG.Doc;
     private _clientRect: ClientRect;
     private _outline: Outline;
     private _cutouts: Cutout[];
 
+    /**
+     * Creates new model
+     * @param {SVG.Doc} document - input SVG document to store graphics.
+     */
     constructor(document: SVG.Doc) {
         this._document = document;
         this._clientRect = this._document.node.getBoundingClientRect();
         this._cutouts = [];
     }
 
+    /**
+     * Returns associated document.
+     * @return {SVG.Doc} document
+     */
     public get document(): SVG.Doc {
         return this._document;
     }
 
+    /**
+     * Returns selected cutouts.
+     * @return {Array<Cutout>} array of cutouts
+     */
     public get selection(): Cutout[] {
         let result: Cutout[] = [];
 
@@ -32,17 +48,32 @@ export class CutoutModel {
         return result;
     }
 
+    /**
+     * Adds new cutout to the model
+     * @param {Cutout} cutout - cutout to add.
+     */
     public addCutout(cutout: Cutout): void {
         cutout.add(this.document, this._clientRect);
         this._cutouts.push(cutout);
     }
 
+    /**
+     * Adds new outline to the model. If outline already exists then it's replaced
+     * by new one and all existing cutouts are removed.
+     * @param {Outline} outline - outline to add.
+     */
     public addOutline(outline: Outline): void {
         outline.add(this.document, this._clientRect);
         this._outline = outline;
         this._cutouts = [];
     }
 
+    /**
+     * Locates cutout gy given coordinates.
+     * @param {number} x - x coordinate
+     * @param {number} y - y coordinate
+     * @return {Cutout} cutout at given location.
+     */
     public cutoutFromPoint(x: number, y: number): Cutout {
         let mindist: number = NaN;
         let index: number = -1;
@@ -78,6 +109,11 @@ export class CutoutModel {
         return null;
     }
 
+    /**
+     * Returns cuout by id of its element.
+     * @param {string} id - ID of SVG element
+     * @return {Cutout} cutout
+     */
     public getCutoutById(id: string): Cutout {
         for (let i = 0; i < this._cutouts.length; i++) {
             let cutout = this._cutouts[i];
@@ -85,6 +121,7 @@ export class CutoutModel {
             if (cutout.element.id() === id) {
                 return cutout;
             }
+            // check internal elements as well
             if (cutout.element instanceof SVG.G) {
                 let group = (<SVG.G> cutout.element);
 
@@ -100,6 +137,12 @@ export class CutoutModel {
         return null;
     }
 
+    /**
+     * Moves cutout to given location. It also checks possible clashes and invalid location.
+     * @param {Cutout} cutout - cutout to move
+     * @param {number} x - X coordinate
+     * @param {number} y - Y coordinate
+     */
     public moveCutout(cutout: Cutout, x: number, y: number): void {
         let group = <SVG.G> cutout.element;
 
@@ -161,7 +204,11 @@ export class CutoutModel {
         }
     }
 
-    public removeCutout(cutout: Cutout): void {
+    /**
+     * Deletes given cutout.
+     * @param {Cutout} cutout - cutout to delete
+     */
+    public deleteCutout(cutout: Cutout): void {
         let group = <SVG.G> cutout.element;
 
         if (group) {
@@ -176,6 +223,11 @@ export class CutoutModel {
         }
     }
 
+    /**
+     * Selects given cutout
+     * @param {Cutout} cutout - cutout to select
+     * @param {boolean} flag - controls if cutout is selected (true) or unselected (false)
+     */
     public selectCutout(cutout: Cutout, select = true): void {
         cutout.showSelected(select);
     }
