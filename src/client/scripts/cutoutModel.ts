@@ -86,7 +86,7 @@ export class CutoutModel {
                 return cutout;
             }
             if (cutout.element instanceof SVG.G) {
-                let group = (<SVG.G>cutout.element);
+                let group = (<SVG.G> cutout.element);
 
                 for (let j = 0; j < group.children().length; j++) {
                     let childElement = group.get(j);
@@ -162,7 +162,7 @@ export class CutoutModel {
     }
 
     public removeCutout(cutout: Cutout): void {
-        let group = <SVG.G>cutout.element;
+        let group = <SVG.G> cutout.element;
 
         if (group) {
             group.remove();
