@@ -3,8 +3,12 @@
 
 'use strict';
 
-import { Cutout, Outline } from './cutouts';
+import { Cutout } from './cutouts';
+import { Outline } from './outlines';
 
+/**
+ * Interface for cutout information
+ */
 export interface CutoutInfo {
     id: string;
     placement: {

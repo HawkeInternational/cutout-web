@@ -5,7 +5,7 @@
 
 import { CutoutModel } from './cutoutModel';
 import { Tool, CutoutPlaceTool, CutoutSelectTool, CutoutDeleteTool, CutoutMoveTool, CutoutListTool } from './tools';
-import { RectangularOutline } from './cutouts';
+import { RectangularOutline } from './outlines';
 
 /** Application controller */
 export class AppController {
