@@ -7,6 +7,7 @@ import { CutoutModel } from './cutoutModel';
 import { Tool, CutoutPlaceTool, CutoutSelectTool, CutoutDeleteTool, CutoutMoveTool } from './tools';
 import { RectangularOutline } from './cutouts';
 
+/** Application controller */
 export class AppController {
     private _activeTool: Tool;
     private _model: CutoutModel;
@@ -16,6 +17,9 @@ export class AppController {
        this._snap = 1;
     }
 
+    /**
+     * Initializes application/page
+     */
     public initialize(): void {
         $('#btn-new').on('click', (event) => {
             this.onNew(event);
@@ -44,9 +48,6 @@ export class AppController {
         let svgDocument: SVG.Doc = SVG('svg-canvas');
 
         this._model = new CutoutModel(svgDocument);
-        svgDocument.on('mouseover', (event) => {
-            this.onMouseOver(event);
-        });
         svgDocument.on('mousemove', (event) => {
             this.onMouseMove(event);
         });
@@ -55,6 +56,10 @@ export class AppController {
         });
     }
 
+    /**
+     * Called when new tool is started. Stops active tool.
+     * @param {Tool} tool - tool to start.
+     */
     private startTool(tool: Tool): void {
         if (this._activeTool) {
             this.stopTool();
@@ -67,6 +72,9 @@ export class AppController {
         }
     }
 
+    /**
+     * Called wne tool is stopped.
+     */
     private stopTool(): void {
         if (!this._activeTool) {
             return;
@@ -77,7 +85,11 @@ export class AppController {
         this._activeTool = null;
     }
 
-    private onShowGrid(event): void {
+    /**
+     * Handler for 'grid-show-toggle' checkbox. Shows/hides grid.
+     * @param {JQueryEventObject} event - event object
+     */
+    private onShowGrid(event: JQueryEventObject): void {
         let showGrid: boolean = false;
 
         if ($('#grid-show-toggle').is(':checked')) {
@@ -86,7 +98,11 @@ export class AppController {
         $('#container').toggleClass('grid', showGrid);
     }
 
-    private onChangeSnap(event): void {
+    /**
+     * Handler for 'grid-snap-toggle' checkbox. Sets grid snap.
+     * @param {JQueryEventObject} event - event object
+     */
+    private onChangeSnap(event: JQueryEventObject): void {
         if ($('#grid-snap-toggle').is(':checked')) {
             this._snap = parseInt($('#grid-snap').val());
         }
@@ -95,7 +111,11 @@ export class AppController {
         }
     }
 
-    private onNew(event): void {
+    /**
+     * Handler for 'btn-new' button. Creates new outline.
+     * @param {JQueryEventObject} event - event object
+     */
+    private onNew(event: JQueryEventObject): void {
         let width = parseFloat($('#plate-width').val());
         let height = parseFloat($('#plate-height').val());
         let outline = new RectangularOutline(width, height);
@@ -103,7 +123,11 @@ export class AppController {
         this._model.addOutline(outline);
     }
 
-    private onCutoutAdd(event): void {
+    /**
+     * Handler for 'btn-cutout-add' button. Starts place tool.
+     * @param {JQueryEventObject} event - event object
+     */
+    private onCutoutAdd(event: JQueryEventObject): void {
         console.log('onCutoutAdd');
         let size = $('#cutout-size').val();
         let tool = new CutoutPlaceTool(this._model, size);
@@ -111,27 +135,43 @@ export class AppController {
         this.startTool(tool);
     }
 
-    private onCutoutSelect(event): void {
+    /**
+     * Handler for 'btn-cutout-select' button. Starts select tool.
+     * @param {JQueryEventObject} event - event object
+     */
+    private onCutoutSelect(event: JQueryEventObject): void {
         console.log('onCutoutSelect');
         let tool = new CutoutSelectTool(this._model);
 
         this.startTool(tool);
     }
 
-    private onCutoutDelete(event): void {
+    /**
+     * Handler for 'btn-cutout-delete' button. Starts delete tool.
+     * @param {JQueryEventObject} event - event object
+     */
+    private onCutoutDelete(event: JQueryEventObject): void {
         console.log('onCutoutDelete');
         let tool = new CutoutDeleteTool(this._model);
 
         this.startTool(tool);
     }
 
-    private onCutoutMove(event): void {
+     /**
+     * Handler for 'btn-cutout-move' button. Starts move tool.
+     * @param {JQueryEventObject} event - event object
+     */
+    private onCutoutMove(event: JQueryEventObject): void {
         console.log('onCutoutMove');
         let tool = new CutoutMoveTool(this._model);
 
         this.startTool(tool);
     }
 
+    /**
+     * Handler for 'click' event. Updates active tool.
+     * @param {MouseEvent} event - event object
+     */
     private onClick(event: MouseEvent): void {
         console.log('onClick');
         if (this._activeTool && this._activeTool.onClick) {
@@ -141,6 +181,10 @@ export class AppController {
         }
     }
 
+    /**
+     * Handler for 'mousemove' event. Updates active tool.
+     * @param {MouseEvent} event - event object
+     */
     private onMouseMove(event: MouseEvent): void {
         if (this._activeTool && this._activeTool.onMouseMove) {
             let x = Math.round(event.x / this._snap) * this._snap;
@@ -149,12 +193,6 @@ export class AppController {
             if (!this._activeTool.onMouseMove(x, y)) {
                 this.stopTool();
             }
-        }
-    }
-
-    private onMouseOver(event: MouseEvent): void {
-        if (!this._activeTool) {
-            console.log('onMouseOver: ' + (<any> event).path[0].id);
         }
     }
 }

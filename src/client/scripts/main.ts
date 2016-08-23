@@ -6,6 +6,7 @@ import { AppController } from './appController';
 
 let appController = null;
 
+/** Application entry point */
 $(document).ready(() => {
     console.log('Document is ready');
     if (!appController) {
