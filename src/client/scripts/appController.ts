@@ -1,5 +1,5 @@
 ﻿/// <reference path='../../../typings/globals/jquery/index.d.ts' />
-/// <reference path='../../../typings/globals/svgjs/svgjs.d.ts' />
+/// <reference path='../../../typings/svgjs/svgjs.d.ts' />
 
 'use strict';
 

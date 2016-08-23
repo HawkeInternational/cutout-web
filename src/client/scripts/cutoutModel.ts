@@ -1,4 +1,4 @@
-﻿/// <reference path='../../../typings/globals/svgjs/svgjs.d.ts' />
+﻿/// <reference path='../../../typings/svgjs/svgjs.d.ts' />
 /// <reference path='../../../typings/kld/kld.d.ts' />
 
 'use strict';
