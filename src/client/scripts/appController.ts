@@ -4,7 +4,7 @@
 'use strict';
 
 import { CutoutModel } from './cutoutModel';
-import { Tool, CutoutPlaceTool, CutoutSelectTool, CutoutDeleteTool, CutoutMoveTool } from './tools';
+import { Tool, CutoutPlaceTool, CutoutSelectTool, CutoutDeleteTool, CutoutMoveTool, CutoutListTool } from './tools';
 import { RectangularOutline } from './cutouts';
 
 /** Application controller */
@@ -35,6 +35,9 @@ export class AppController {
         });
         $('#btn-cutout-move').on('click', (event) => {
             this.onCutoutMove(event);
+        });
+        $('#btn-cutout-list').on('click', (event) => {
+            this.onCutoutList(event);
         });
         $('#grid-show-toggle').on('click', (event) => {
             this.onShowGrid(event);
@@ -153,6 +156,17 @@ export class AppController {
     private onCutoutDelete(event: JQueryEventObject): void {
         console.log('onCutoutDelete');
         let tool = new CutoutDeleteTool(this._model);
+
+        this.startTool(tool);
+    }
+
+    /**
+     * Handler for 'btn-cutout-list' button. Starts list tool.
+     * @param {JQueryEventObject} event - event object
+     */
+    private onCutoutList(event: JQueryEventObject): void {
+        console.log('onCutoutList');
+        let tool = new CutoutListTool(this._model);
 
         this.startTool(tool);
     }

@@ -3,7 +3,7 @@
 
 'use strict';
 
-import { CutoutModel } from './cutoutModel';
+import { CutoutModel, CutoutInfo } from './cutoutModel';
 import { Cutout, CircularCutout } from './cutouts';
 
 /**
@@ -181,3 +181,47 @@ export class CutoutMoveTool implements Tool {
         return false;
     }
 }
+
+/**
+ * Tool to collect cutout information
+ */
+export class CutoutListTool implements Tool {
+    private _model: CutoutModel;
+
+    constructor(model: CutoutModel) {
+        this._model = model;
+    }
+
+    public start(): boolean {
+        $('#info-panel').toggleClass('hidden', false);
+        $('#btn-info-close').on('click', () => {
+            this.onClose();
+        });
+        let cutoutInfo: CutoutInfo[] = this._model.cutoutInfo;
+        let info: string = '';
+
+        for (let i = 0; i < cutoutInfo.length; i++) {
+            let item = cutoutInfo[i];
+
+            info = info.concat(JSON.stringify(item));
+        }
+        $('#cutout-data').val(info);
+        return true;
+    }
+
+    public stop(): void {
+        if (!$('#info-panel').hasClass('hidden')) {
+            this.hidePanel();
+        }
+    }
+
+    private hidePanel(): void {
+        $('#info-panel').toggleClass('hidden', true);
+        $('#btn-info-close').off('click');
+    }
+
+    private onClose(): void {
+        this.hidePanel();
+    }
+}
+

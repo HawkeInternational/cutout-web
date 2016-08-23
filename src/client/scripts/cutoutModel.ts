@@ -5,6 +5,15 @@
 
 import { Cutout, Outline } from './cutouts';
 
+export interface CutoutInfo {
+    id: string;
+    placement: {
+        x: number;
+        y: number;
+    };
+    size: string;
+}
+
 /**
  * Represents model for cutout placement. Model has one outline and multiple cutouts.
  * In current version the outline is a rectangle and cutouts are circular
@@ -23,6 +32,28 @@ export class CutoutModel {
         this._document = document;
         this._clientRect = this._document.node.getBoundingClientRect();
         this._cutouts = [];
+    }
+
+    /**
+     * Returns information about cutouts ine the model.
+     * @return {Array<CutoutInfo>} array of CutoutIinfo items
+     */
+    public get cutoutInfo(): CutoutInfo[] {
+        let result = [];
+
+        for (let i = 0; i < this._cutouts.length; i++) {
+            let cutout: Cutout = this._cutouts[i];
+
+            result.push({
+                id: cutout.element.id(),
+                placement: {
+                    x: cutout.x,
+                    y: cutout.y
+                },
+                size: cutout.size
+            });
+        }
+        return result;
     }
 
     /**
@@ -202,6 +233,12 @@ export class CutoutModel {
         else {
             cutout.showClash(false);
         }
+        // calculate local coordinates of cutout relative to outline (origin = lower left corner, cartesian)
+        let baseX = bbox2.cx - halfWidth;
+        let baseY = bbox2.cy + halfHeight;
+
+        cutout.x = bbox1.cx - baseX;
+        cutout.y = baseY - bbox1.cy;
     }
 
     /**

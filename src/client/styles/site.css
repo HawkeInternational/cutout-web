@@ -112,6 +112,30 @@
     visibility: hidden;
 }
 
+.info-panel {
+    position: absolute;
+    display: block;
+    left: 140px;
+    top: 36px;
+    width: 500px;
+    height: 230px;
+    z-index: 1;
+    background: rgba(128, 128, 128, 0.8);
+    border: 1px solid rgba(150, 150, 150, 0.15);
+}
+
+.info-panel.hidden {
+    visibility: hidden;
+}
+
+.info-panel > textarea {
+    margin: 0 5px 0 5px;
+    height: 164px;
+    max-height: 164px;
+    width: 484px;
+    max-width: 484px;
+}
+
 .outline {
     fill: none;
     stroke: white;

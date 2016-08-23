@@ -11,6 +11,7 @@ export interface Cutout {
     safeWidth: number;
     hasClash: boolean;
     selected: boolean;
+    size: string;
     element: SVG.Element;
 
     add(document: SVG.Doc, clientRect: ClientRect): SVG.Element;
@@ -30,6 +31,8 @@ export class CircularCutout implements Cutout {
     private _selected: boolean;
 
     constructor(size: string) {
+        this._x = 0;
+        this._y = 0;
         this._size = size;
         this._diameter = parseFloat(this._size);
         this._keepoutZoneDiameter = this._diameter * 2.0;
@@ -43,8 +46,16 @@ export class CircularCutout implements Cutout {
         return this._x;
     }
 
+    public set x(value: number) {
+        this._x = value;
+    }
+
     public get y(): number {
         return this._y;
+    }
+
+    public set y(value: number) {
+        this._y = value;
     }
 
     public get height(): number {
@@ -76,6 +87,7 @@ export class CircularCutout implements Cutout {
     }
 
     public set size(value: string) {
+        this._size = value;
         this._diameter = parseFloat(value);
         this._keepoutZoneDiameter = this._diameter * 2.0;
         let outline: SVG.Circle = (<SVG.Circle> this._group.get(0));
