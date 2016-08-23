@@ -24,6 +24,7 @@ export class CutoutPlaceTool implements Tool {
     }
 
     public start(): boolean {
+        $('#container').toggleClass('pick', true);
         $('#cutout-panel').toggleClass('hidden', false);
         $('#cutout-size').on('change', () => {
             this.onChangeSize();
@@ -32,6 +33,7 @@ export class CutoutPlaceTool implements Tool {
     }
 
     public stop(): void {
+        $('#container').toggleClass('pick', false);
         $('#cutout-panel').toggleClass('hidden', true);
         $('#cutout-size').off('change');
         this._cutout = null;

@@ -32,6 +32,11 @@
     height: 800px;
     width: 1000px;
     background-color: #3177C6;
+    cursor: default;
+}
+
+.container.pick {
+    cursor: crosshair;
 }
 
 .container.grid {

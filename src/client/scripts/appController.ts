@@ -56,6 +56,9 @@ export class AppController {
     }
 
     private startTool(tool: Tool): void {
+        if (this._activeTool) {
+            this.stopTool();
+        }
         this._activeTool = tool;
         if (this._activeTool.start) {
             if (!this._activeTool.start()) {
