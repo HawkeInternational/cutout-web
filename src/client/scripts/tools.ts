@@ -6,13 +6,41 @@
 import { CutoutModel } from './cutoutModel';
 import { Cutout, CircularCutout } from './cutouts';
 
+/**
+ * Base interface for Tool. Tool is an user action which implements logic
+ * behind button. All methods are optional.
+ */
 export interface Tool {
+    /**
+     * Called when tool is activated.
+     * @return {boolean}
+     */
     start?(): boolean;
+
+    /**
+     * Called when tool is deactivated (i.e. another tool is activated).
+     */
     stop?(): void;
+
+    /**
+     * Called when mouse is moved.
+     * @param {number} x - coordinate
+     * @param {number} y - coordinate
+     * @return {boolean}
+     */
     onMouseMove?(x: number, y: number): boolean;
+
+    /**
+     * Called when user clicks a button.
+     * @param {MouseEvent} event - event information
+     * @return {boolean}
+     */
     onClick?(event: MouseEvent): boolean;
 }
 
+/**
+ * Tool to place cutout by mouse.
+ */
 export class CutoutPlaceTool implements Tool {
     private _model: CutoutModel;
     private _size: string;
@@ -73,6 +101,9 @@ export class CutoutPlaceTool implements Tool {
     }
 }
 
+/**
+ * Tool to select cutout by cursor
+ */
 export class CutoutSelectTool implements Tool {
     private _model: CutoutModel;
 
@@ -90,6 +121,9 @@ export class CutoutSelectTool implements Tool {
     }
 }
 
+/**
+ * Tool to delete selected cutouts
+ */
 export class CutoutDeleteTool implements Tool {
     private _model: CutoutModel;
 
@@ -108,6 +142,9 @@ export class CutoutDeleteTool implements Tool {
     }
 }
 
+/**
+ * Tool to move selected cutout
+ */
 export class CutoutMoveTool implements Tool {
     private _model: CutoutModel;
     private _cutout: Cutout;
