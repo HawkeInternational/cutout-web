@@ -1,4 +1,5 @@
 ﻿/// <reference path='../../../typings/globals/svgjs/svgjs.d.ts' />
+/// <reference path='../../../typings/kld/kld.d.ts' />
 
 'use strict';
 
@@ -38,6 +39,7 @@ export class CutoutModel {
 
     public addOutline(outline: Outline): void {
         outline.add(this.document, this._clientRect);
+        this._outline = outline;
         this._cutouts = [];
     }
 
@@ -109,6 +111,26 @@ export class CutoutModel {
         let safeRadius1: number = Math.max(cutout.safeHeight, cutout.safeWidth) * 0.5;
         let numClashes: number = 0;
 
+        // check collision against outline
+        let bbox2: SVG.TBox = this._outline.element.tbox();
+        let halfHeight = bbox2.h * 0.5;
+        let halfWidth = bbox2.w * 0.5;
+        let outlineShape = IntersectionParams.newRect(bbox2.cx - halfWidth, bbox2.cy - halfHeight, bbox2.w, bbox2.h);
+        let cutoutShape = IntersectionParams.newCircle(new Point2D(bbox1.cx, bbox1.cy), safeRadius1);
+        let result = Intersection.intersectShapes(outlineShape, cutoutShape);
+
+        if (result.points.length > 0) {
+            numClashes++;
+        }
+        else {
+            // check if it's outside
+            let dist1 = Math.abs(bbox1.cx - bbox2.cx);
+            let dist2 = Math.abs(bbox1.cy - bbox2.cy);
+
+            if ((dist1 > (halfWidth + safeRadius1)) || (dist2 > (halfHeight + safeRadius1))) {
+                numClashes++;
+            }
+        }
         // check for collision
         for (let i = 0; i < this._cutouts.length; i++) {
             let otherCutout: Cutout = this._cutouts[i];
@@ -116,11 +138,12 @@ export class CutoutModel {
             if (cutout.element.id() === otherCutout.element.id()) {
                 continue;
             }
-            let bbox2: SVG.TBox = otherCutout.element.tbox();
+            let bbox3: SVG.TBox = otherCutout.element.tbox();
             let safeRadius2: number = Math.max(otherCutout.safeHeight, otherCutout.safeWidth) * 0.5;
-            let dist: number = CutoutModel.distance(bbox1.cx, bbox1.cy, bbox2.cx, bbox2.cy);
+            let otherShape = IntersectionParams.newCircle(new Point2D(bbox3.cx, bbox3.cy), safeRadius2);
+            let result = Intersection.intersectShapes(cutoutShape, otherShape);
 
-            if (dist <= (safeRadius1 + safeRadius2)) {
+            if (result.points.length > 0) {
                 otherCutout.showZone(true);
                 otherCutout.showClash(true);
                 numClashes++;
